@@ -90,34 +90,41 @@ class Client {
 
   // `Pair` requires a `pairingSalt` and a secret
   pair(pairingSecret, cb) {
-    // Ensure we have a pairing secret
-    if (!this.pairingSalt) return cb('Unable to pair. Please call `connect` to initialize pairing process.');
+    // // Ensure we have a pairing secret
+    // if (!this.pairingSalt) return cb('Unable to pair. Please call `connect` to initialize pairing process.');
 
-    // Build the secret hash from the salt
-    const pubKey = this.pubKeyBytes();
-    const nameBuf = Buffer.alloc(25);
-    nameBuf.write(this.name);
-    const pairingSecretBuf = Buffer.from(pairingSecret);
-    const preImage = Buffer.concat([pubKey, nameBuf, pairingSecretBuf, this.pairingSalt]);
-    const hash = this.crypto.createHash('sha256').update(preImage).digest();
-    const sig = this.key.sign(hash); // returns an array, not a buffer
+    // // Build the secret hash from the salt
+    // const pubKey = this.pubKeyBytes();
+    // const nameBuf = Buffer.alloc(25);
+    // nameBuf.write(this.name);
+    // const pairingSecretBuf = Buffer.from(pairingSecret);
+    // const preImage = Buffer.concat([pubKey, nameBuf, pairingSecretBuf, this.pairingSalt]);
+    // const hash = this.crypto.createHash('sha256').update(preImage).digest();
+    // const sig = this.key.sign(hash); // returns an array, not a buffer
 
-    // The payload adheres to the serialization format of the PAIR route
-    const payload = Buffer.concat([pubKey, sig.r.toBuffer(), sig.s.toBuffer(), nameBuf]);
+    // // The payload adheres to the serialization format of the PAIR route
+    // const payload = Buffer.concat([pubKey, sig.r.toBuffer(), sig.s.toBuffer(), nameBuf]);
 
-    // Build the request
-    const param = this._buildRequest(deviceCodes.FINALIZE_PAIRING, payload);
-    return this._request(param, (err, res) => {
-      if (err) return cb(err);
-      try {
-        // Recover the ephemeral key
-        const success = this._handlePair(res);
-        if (!success) return cb('Could not handle response from device. Please try again.');
-        return cb(null);
-      } catch (e) {
-        return cb(e);
-      }
-    })  
+    // // Build the request
+    // const param = this._buildRequest(deviceCodes.FINALIZE_PAIRING, payload);
+    // return this._request(param, (err, res) => {
+    //   if (err) return cb(err);
+    //   try {
+    //     // Recover the ephemeral key
+    //     const success = this._handlePair(res);
+    //     if (!success) return cb('Could not handle response from device. Please try again.');
+    //     return cb(null);
+    //   } catch (e) {
+    //     return cb(e);
+    //   }
+    // })  
+    console.log('IN PAIR WOOOOOOO')
+    cb(null)
+  }
+
+  test(cb) {
+    console.log('TESTTTTTTT')
+    cb()
   }
 
   //=======================================================================
